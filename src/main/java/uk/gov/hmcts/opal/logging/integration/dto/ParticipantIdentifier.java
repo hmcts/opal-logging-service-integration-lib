@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ParticipantIdentifier {
 
-    @JsonProperty("identifier")
+    @JsonProperty("id")
     private String identifier;
     @JsonProperty("type")
     private  IdentifierType type;
