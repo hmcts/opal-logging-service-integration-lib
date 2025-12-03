@@ -1,11 +1,20 @@
 package uk.gov.hmcts.opal.logging.integration.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.opal.logging.integration.dto.PersonalDataProcessingLogDetails;
 
 /**
- * Placeholder implementation that will be expanded when the library is integrated.
+ * Delegates PDPO logging operations to the async publisher.
  */
 @Service
+@RequiredArgsConstructor
 public class LoggingServiceImpl implements LoggingService {
-    // Intentionally empty until concrete behaviour is defined.
+
+    private final PdpoAsyncPublisher pdpoAsyncPublisher;
+
+    @Override
+    public boolean personalDataAccessLogAsync(PersonalDataProcessingLogDetails logDetails) {
+        return pdpoAsyncPublisher.publish(logDetails);
+    }
 }
