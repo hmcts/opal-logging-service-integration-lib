@@ -43,3 +43,29 @@ Standard Gradle lifecycle applies:
 ```
 
 Additional source sets (`integration`, `smoke`, `functional`) are available if you add tests for the integration entry points.
+
+### Manual Azure Service Bus Connectivity Test
+
+You can exercise a real Service Bus queue end-to-end using the manual smoke test
+`PdpoAsyncPublisherConnectivityTest`. This is useful when validating the library against a
+namespace such as `opal-servicebus-stg`.
+
+1. Obtain the queue credentials (connection string + queue name) from the Azure Key Vault secrets
+   `servicebus-connection-string` and `servicebus-logging-pdpl-queue-name`.
+2. Export them as environment variables (or add them to your shell profile):
+   ```bash
+   export LOGGING_PDPL_ASYNC_CONNECTION_STRING='Endpoint=sb://opal-servicebus-stg.servicebus.windows.net/...'
+   export LOGGING_PDPL_ASYNC_QUEUE='logging-pdpl'
+   ```
+3. Opt in to the manual test by setting `LOGGING_PDPL_ASYNC_CONNECTIVITY_TEST_ENABLED=true`.
+4. Run one of the manual tests:
+   ```bash
+   LOGGING_PDPL_ASYNC_CONNECTIVITY_TEST_ENABLED=true ./gradlew test \
+     --tests uk.gov.hmcts.opal.logging.integration.service.PdpoAsyncPublisherConnectivityTest
+   LOGGING_PDPL_ASYNC_CONNECTIVITY_TEST_ENABLED=true ./gradlew test \
+     --tests uk.gov.hmcts.opal.logging.integration.service.PdpoQueuePeekTest
+   ```
+
+The first command enqueues a PDPO payload. The second command peeks the queue and prints any
+messages that are currently stored, which is useful when the Azure portal cannot display them. When the opt-in flag is absent the tests are skipped automatically so
+regular CI runs do not depend on external infrastructure.
