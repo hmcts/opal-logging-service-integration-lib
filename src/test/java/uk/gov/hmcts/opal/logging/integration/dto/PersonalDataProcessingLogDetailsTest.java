@@ -51,7 +51,7 @@ class PersonalDataProcessingLogDetailsTest {
             .businessIdentifier("BUS-999")
             .createdAt(createdAt)
             .ipAddress("192.0.2.1")
-            .category(PersonalDataProcessingCategory.DISCLOSURE_TRANSFERS)
+            .category(PersonalDataProcessingCategory.DISCLOSURE)
             .recipient(recipient)
             .individuals(List.of(individual))
             .build();
@@ -60,21 +60,21 @@ class PersonalDataProcessingLogDetailsTest {
 
         JsonNode root = mapper.readTree(json);
 
-        assertEquals("creator-123", root.get("created_by").get("identifier").asText());
+        assertEquals("creator-123", root.get("created_by").get("id").asText());
         assertEquals("OPAL_USER_ID", root.get("created_by").get("type").asText());
 
-        assertEquals("recipient-456", root.get("recipient").get("identifier").asText());
+        assertEquals("recipient-456", root.get("recipient").get("id").asText());
         assertEquals("EXTERNAL_SERVICE", root.get("recipient").get("type").asText());
 
         assertEquals("BUS-999", root.get("business_identifier").asText());
         assertEquals("192.0.2.1", root.get("ip_address").asText());
-        assertEquals("DISCLOSURE_TRANSFERS", root.get("category").asText());
+        assertEquals("Disclosure", root.get("category").asText());
         assertEquals("2025-01-10T12:34:56.789Z", root.get("created_at").asText());
 
         JsonNode individuals = root.get("individuals");
         assertNotNull(individuals);
         assertEquals(1, individuals.size());
-        assertEquals("individual-789", individuals.get(0).get("identifier").asText());
+        assertEquals("individual-789", individuals.get(0).get("id").asText());
         assertEquals("EXTERNAL_SERVICE", individuals.get(0).get("type").asText());
     }
 }
