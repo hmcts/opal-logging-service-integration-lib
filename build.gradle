@@ -16,7 +16,7 @@ plugins {
 application {
     mainClass = 'uk.gov.hmcts.opal.logging.integration.Application'
     group = 'uk.gov.hmcts'
-    version = '0.0.1'
+    version = '0.0.2'
 }
 
 java {
