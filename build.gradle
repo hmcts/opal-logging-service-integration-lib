@@ -161,8 +161,8 @@ dependencies {
     testImplementation group: 'com.azure', name: 'azure-messaging-servicebus', version: '7.17.2'
 
     implementation 'com.microsoft.azure:applicationinsights-spring-boot-starter:2.6.4'
-    compileOnly 'org.projectlombok:lombok:1.18.40'
-    annotationProcessor 'org.projectlombok:lombok:1.18.40'
+    compileOnly 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
 
 }
 
