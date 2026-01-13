@@ -166,6 +166,10 @@ dependencies {
 
 }
 
+rootProject.tasks.named("processIntegrationTestResources") {
+    duplicatesStrategy = 'include'
+}
+
 bootJar {
 
     archiveFileName = "opal-logging-service-integration-lib.jar"
