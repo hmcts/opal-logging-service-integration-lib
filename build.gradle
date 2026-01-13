@@ -16,7 +16,7 @@ plugins {
 application {
     mainClass = 'uk.gov.hmcts.opal.logging.integration.Application'
     group = 'uk.gov.hmcts'
-    version = '0.0.2'
+    version = '0.0.3'
 }
 
 java {
@@ -164,6 +164,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.40'
     annotationProcessor 'org.projectlombok:lombok:1.18.40'
 
+}
+
+rootProject.tasks.named("processIntegrationTestResources") {
+    duplicatesStrategy = 'include'
 }
 
 bootJar {
