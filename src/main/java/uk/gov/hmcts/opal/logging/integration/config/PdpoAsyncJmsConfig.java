@@ -23,8 +23,8 @@ public class PdpoAsyncJmsConfig {
         ServiceBusConnectionStringParser.ConnectionDetails details =
             ServiceBusConnectionStringParser.parse(properties.connectionString());
 
-        String remoteUri = "amqps://%s?jms.sendTimeout=%d&amqp.idleTimeout=120000"
-            .formatted(details.fullyQualifiedNamespace(), properties.sendTimeout().toMillis());
+        String remoteUri = "%s://%s?jms.sendTimeout=%d&amqp.idleTimeout=120000"
+            .formatted(properties.protocol(), details.fullyQualifiedNamespace(), properties.sendTimeout().toMillis());
 
         JmsConnectionFactory qpidFactory = new JmsConnectionFactory(remoteUri);
         qpidFactory.setUsername(details.sharedAccessKeyName());
