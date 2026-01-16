@@ -51,6 +51,7 @@ class PdpoAsyncPublisherImplTest {
     @BeforeEach
     void setUp() {
         properties = new PdpoAsyncProperties(
+            "amqps",
             "Endpoint=sb://example/",
             "pdpo-queue",
             "PDPO",
