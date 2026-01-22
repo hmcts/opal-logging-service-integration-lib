@@ -1,5 +1,5 @@
 plugins {
-    id 'application'
+    id 'java-library'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.springframework.boot' version '3.5.9'
@@ -9,19 +9,29 @@ plugins {
     /*
       Applies analysis tools including checkstyle and OWASP Dependency checker.
       See https://github.com/hmcts/gradle-java-plugin
-  */
+    */
     id 'uk.gov.hmcts.java' version '0.12.67'
 }
 
-application {
-    mainClass = 'uk.gov.hmcts.opal.logging.integration.Application'
-    group = 'uk.gov.hmcts'
-    version = '0.0.4'
-}
+group = 'uk.gov.hmcts'
+version = '0.0.5'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+/**
+ * This project is a support library, not a runnable Spring Boot application.
+ * Publish a plain jar and disable bootJar.
+ */
+tasks.named('bootJar') { enabled = false }
+tasks.named('jar') {
+    enabled = true
+    archiveFileName = "opal-logging-service-integration-lib.jar"
+    manifest {
+        attributes('Implementation-Version': project.version.toString())
     }
 }
 
@@ -40,13 +50,13 @@ def configureSourceSet(String name) {
 
 configurations {
     functionalTestImplementation.extendsFrom testImplementation
-    functionalTestRuntimeOnly.extendsFrom runtimeOnly
+    functionalTestRuntimeOnly.extendsFrom testRuntimeOnly
 
     integrationTestImplementation.extendsFrom testImplementation
-    integrationTestRuntimeOnly.extendsFrom runtimeOnly
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 
     smokeTestImplementation.extendsFrom testImplementation
-    smokeTestRuntimeOnly.extendsFrom runtimeOnly
+    smokeTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -171,17 +181,6 @@ rootProject.tasks.named("processIntegrationTestResources") {
     duplicatesStrategy = 'include'
 }
 
-bootJar {
-
-    archiveFileName = "opal-logging-service-integration-lib.jar"
-
-    manifest {
-        attributes('Implementation-Version': project.version.toString())
-    }
-}
-wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-}
 publishing {
     repositories {
         maven {
