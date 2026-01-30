@@ -169,7 +169,7 @@ dependencies {
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springVersion
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '6.0.0'
-    testImplementation group: 'com.azure', name: 'azure-messaging-servicebus', version: '7.17.16'
+    testImplementation group: 'com.azure', name: 'azure-messaging-servicebus', version: '7.17.17'
 
     implementation 'com.microsoft.azure:applicationinsights-spring-boot-starter:2.6.4'
     compileOnly 'org.projectlombok:lombok:1.18.42'
