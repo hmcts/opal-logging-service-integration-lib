@@ -151,11 +151,20 @@ ext {
 
 ext['snakeyaml.version'] = '2.0'
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.0.0'
+    }
+}
+
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springVersion
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springVersion
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: springVersion
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: springVersion
+    implementation('org.springframework.cloud:spring-cloud-starter-openfeign') {
+        exclude group: 'commons-fileupload', module: 'commons-fileupload'
+    }
     implementation group: 'org.springframework', name: 'spring-jms', version: '6.2.15'
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.15'
 

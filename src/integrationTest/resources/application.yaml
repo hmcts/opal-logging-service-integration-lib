@@ -9,3 +9,10 @@ logging-service:
       max-retries: ${LOGGING_PDPL_ASYNC_MAX_RETRIES:3}
       retry-delay: ${LOGGING_PDPL_ASYNC_RETRY_DELAY:PT1S}
       send-timeout: ${LOGGING_PDPL_ASYNC_SEND_TIMEOUT:PT10S}
+    sync:
+      base-url: ${LOGGING_PDPL_SYNC_BASE_URL:http://localhost:9999}
+      endpoint: ${LOGGING_PDPL_SYNC_ENDPOINT:/log/pdpo}
+      max-retries: ${LOGGING_PDPL_SYNC_MAX_RETRIES:4}
+      retry-delay: ${LOGGING_PDPL_SYNC_RETRY_DELAY:PT1S}
+      connect-timeout: ${LOGGING_PDPL_SYNC_CONNECT_TIMEOUT:PT2S}
+      read-timeout: ${LOGGING_PDPL_SYNC_READ_TIMEOUT:PT5S}
