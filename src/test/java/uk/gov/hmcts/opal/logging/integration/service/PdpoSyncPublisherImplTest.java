@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import feign.FeignException;
 import feign.Request;
 import feign.RequestTemplate;
+import feign.RetryableException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +42,7 @@ class PdpoSyncPublisherImplTest {
         properties = new PdpoSyncProperties(
             "https://logging-service",
             "/log/pdpo",
-            3,
+            4,
             Duration.ZERO,
             Duration.ofSeconds(2),
             Duration.ofSeconds(5)
@@ -60,19 +60,6 @@ class PdpoSyncPublisherImplTest {
 
         assertThat(result).isTrue();
         verify(pdpoSyncClient).logPdpo(details);
-    }
-
-    @Test
-    void shouldRetryAndSucceed() {
-        PersonalDataProcessingLogDetails details = sampleDetails();
-        when(pdpoSyncClient.logPdpo(details))
-            .thenThrow(serverErrorException())
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).build());
-
-        boolean result = publisher.publish(details);
-
-        assertThat(result).isTrue();
-        verify(pdpoSyncClient, Mockito.times(2)).logPdpo(details);
     }
 
     @Test
@@ -96,7 +83,7 @@ class PdpoSyncPublisherImplTest {
         boolean result = publisher.publish(details);
 
         assertThat(result).isFalse();
-        verify(pdpoSyncClient, Mockito.times(properties.maxRetries())).logPdpo(details);
+        verify(pdpoSyncClient).logPdpo(details);
     }
 
     @Test
@@ -104,6 +91,18 @@ class PdpoSyncPublisherImplTest {
         PersonalDataProcessingLogDetails details = sampleDetails();
         when(pdpoSyncClient.logPdpo(details))
             .thenThrow(notFoundException());
+
+        boolean result = publisher.publish(details);
+
+        assertThat(result).isFalse();
+        verify(pdpoSyncClient).logPdpo(details);
+    }
+
+    @Test
+    void shouldReturnFalseOnRetryableException() {
+        PersonalDataProcessingLogDetails details = sampleDetails();
+        when(pdpoSyncClient.logPdpo(details))
+            .thenThrow(retryableException());
 
         boolean result = publisher.publish(details);
 
@@ -147,7 +146,7 @@ class PdpoSyncPublisherImplTest {
         return new FeignException.NotFound("not found", request, null, Map.of());
     }
 
-    private FeignException serverErrorException() {
+    private RetryableException retryableException() {
         Request request = Request.create(
             Request.HttpMethod.POST,
             "/log/pdpo",
@@ -156,7 +155,13 @@ class PdpoSyncPublisherImplTest {
             StandardCharsets.UTF_8,
             new RequestTemplate()
         );
-        return new FeignException.InternalServerError("server error", request, null, Map.of());
+        return new RetryableException(
+            503,
+            "retryable",
+            Request.HttpMethod.POST,
+            (Long) null,
+            request
+        );
     }
 
     private PersonalDataProcessingLogDetails sampleDetails() {
