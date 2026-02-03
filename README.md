@@ -67,8 +67,8 @@ Prefix: `logging-service.pdpl.sync.*`
 
 - `base-url`
 - `endpoint` (default `/log/pdpo`)
-- `max-retries` (defaults to 4 total attempts: 1 initial + 3 retries)
-- `retry-delay`
+- `max-attempts` (defaults to 4 total attempts: 1 initial + 3 retries)
+- `retry-delay` (default `PT15S`)
 - `connect-timeout`
 - `read-timeout`
 

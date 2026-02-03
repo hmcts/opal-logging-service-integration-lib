@@ -27,7 +27,7 @@ public class PdpoSyncFeignConfig {
         return new Retryer.Default(
             delayMillis,
             delayMillis,
-            properties.maxRetries()
+            properties.maxAttempts()
         );
     }
 

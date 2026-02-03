@@ -33,7 +33,7 @@ public class PdpoSyncPublisherImpl implements PdpoSyncPublisher {
             return false;
         } catch (RetryableException ex) {
             log.error("Unable to send PDPO log after {} attempts, lastFailure={}, logDetails={}",
-                properties.maxRetries(),
+                properties.maxAttempts(),
                 "HTTP " + ex.status(),
                 logDetails,
                 ex);
