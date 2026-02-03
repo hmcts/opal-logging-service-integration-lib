@@ -16,8 +16,8 @@ import org.springframework.validation.annotation.Validated;
 public record PdpoSyncProperties(
     @DefaultValue("http://localhost:9999") @NotBlank String baseUrl,
     @DefaultValue("/log/pdpo") @NotBlank String endpoint,
-    @DefaultValue("4") @Min(1) int maxRetries,
-    @DefaultValue("PT1S") Duration retryDelay,
+    @DefaultValue("4") @Min(1) int maxAttempts,
+    @DefaultValue("PT15S") Duration retryDelay,
     @DefaultValue("PT2S") Duration connectTimeout,
     @DefaultValue("PT5S") Duration readTimeout
 ) {

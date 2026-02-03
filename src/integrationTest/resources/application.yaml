@@ -12,7 +12,8 @@ logging-service:
     sync:
       base-url: ${LOGGING_PDPL_SYNC_BASE_URL:http://localhost:9999}
       endpoint: ${LOGGING_PDPL_SYNC_ENDPOINT:/log/pdpo}
-      max-retries: ${LOGGING_PDPL_SYNC_MAX_RETRIES:4}
+      max-attempts: ${LOGGING_PDPL_SYNC_MAX_ATTEMPTS:4}
+      # Keep short by default to avoid slow integration test runs.
       retry-delay: ${LOGGING_PDPL_SYNC_RETRY_DELAY:PT1S}
       connect-timeout: ${LOGGING_PDPL_SYNC_CONNECT_TIMEOUT:PT2S}
       read-timeout: ${LOGGING_PDPL_SYNC_READ_TIMEOUT:PT5S}

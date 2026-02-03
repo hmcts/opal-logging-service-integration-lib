@@ -15,7 +15,7 @@ class PdpoSyncPropertiesTest {
         .withPropertyValues(
             "logging-service.pdpl.sync.base-url=https://logging-service",
             "logging-service.pdpl.sync.endpoint=/log/pdpo",
-            "logging-service.pdpl.sync.max-retries=5",
+            "logging-service.pdpl.sync.max-attempts=5",
             "logging-service.pdpl.sync.retry-delay=PT3S",
             "logging-service.pdpl.sync.connect-timeout=PT2S",
             "logging-service.pdpl.sync.read-timeout=PT4S"
@@ -28,7 +28,7 @@ class PdpoSyncPropertiesTest {
 
             assertThat(properties.baseUrl()).isEqualTo("https://logging-service");
             assertThat(properties.endpoint()).isEqualTo("/log/pdpo");
-            assertThat(properties.maxRetries()).isEqualTo(5);
+            assertThat(properties.maxAttempts()).isEqualTo(5);
             assertThat(properties.retryDelay()).isEqualTo(Duration.ofSeconds(3));
             assertThat(properties.connectTimeout()).isEqualTo(Duration.ofSeconds(2));
             assertThat(properties.readTimeout()).isEqualTo(Duration.ofSeconds(4));
