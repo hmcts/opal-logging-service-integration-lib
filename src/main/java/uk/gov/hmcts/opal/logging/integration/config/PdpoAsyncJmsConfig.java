@@ -1,6 +1,5 @@
 package uk.gov.hmcts.opal.logging.integration.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jms.ConnectionFactory;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.JacksonJsonMessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
 /**
@@ -39,10 +38,9 @@ public class PdpoAsyncJmsConfig {
     }
 
     @Bean
-    public MappingJackson2MessageConverter pdpoMessageConverter(ObjectMapper objectMapper) {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+    public JacksonJsonMessageConverter pdpoMessageConverter() {
+        JacksonJsonMessageConverter converter = new JacksonJsonMessageConverter();
         converter.setTargetType(MessageType.TEXT);
-        converter.setObjectMapper(objectMapper);
         converter.setTypeIdPropertyName("_pdpoType");
         return converter;
     }
@@ -50,7 +48,7 @@ public class PdpoAsyncJmsConfig {
     @Bean
     public JmsTemplate pdpoJmsTemplate(
         ConnectionFactory pdpoJmsConnectionFactory,
-        MappingJackson2MessageConverter pdpoMessageConverter,
+        JacksonJsonMessageConverter pdpoMessageConverter,
         PdpoAsyncProperties properties
     ) {
         JmsTemplate jmsTemplate = new JmsTemplate(pdpoJmsConnectionFactory);

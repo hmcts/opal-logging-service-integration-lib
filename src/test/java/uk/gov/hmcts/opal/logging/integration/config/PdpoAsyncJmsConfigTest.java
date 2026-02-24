@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.converter.JacksonJsonMessageConverter;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 
 class PdpoAsyncJmsConfigTest {
@@ -33,7 +34,7 @@ class PdpoAsyncJmsConfigTest {
             ConnectionFactory factory = context.getBean(ConnectionFactory.class);
             assertThat(factory).isInstanceOf(CachingConnectionFactory.class);
 
-            MappingJackson2MessageConverter converter = context.getBean(MappingJackson2MessageConverter.class);
+            JacksonJsonMessageConverter converter = context.getBean(JacksonJsonMessageConverter.class);
             assertThat(converter).isNotNull();
 
             JmsTemplate template = context.getBean(JmsTemplate.class);
