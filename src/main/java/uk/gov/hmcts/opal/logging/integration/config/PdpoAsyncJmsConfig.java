@@ -18,7 +18,7 @@ import org.springframework.jms.support.converter.MessageType;
 @Configuration
 public class PdpoAsyncJmsConfig {
 
-    @Bean
+    @Bean("pdpoJmsConnectionFactory")
     public ConnectionFactory pdpoJmsConnectionFactory(PdpoAsyncProperties properties) {
         ServiceBusConnectionStringParser.ConnectionDetails details =
             ServiceBusConnectionStringParser.parse(properties.connectionString());
@@ -47,7 +47,7 @@ public class PdpoAsyncJmsConfig {
         return converter;
     }
 
-    @Bean
+    @Bean("pdpoJmsTemplate")
     public JmsTemplate pdpoJmsTemplate(
         ConnectionFactory pdpoJmsConnectionFactory,
         MappingJackson2MessageConverter pdpoMessageConverter,
