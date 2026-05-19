@@ -8,8 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
@@ -22,11 +22,16 @@ import uk.gov.hmcts.opal.logging.integration.messaging.PdpoLogMessage;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class PdpoAsyncPublisherImpl implements PdpoAsyncPublisher {
 
     private final JmsTemplate jmsTemplate;
     private final PdpoAsyncProperties properties;
+
+    public PdpoAsyncPublisherImpl(@Qualifier("pdpoJmsTemplate") JmsTemplate jmsTemplate,
+                                  PdpoAsyncProperties properties) {
+        this.jmsTemplate = jmsTemplate;
+        this.properties = properties;
+    }
 
     @Override
     public boolean publish(PersonalDataProcessingLogDetails logDetails) {
