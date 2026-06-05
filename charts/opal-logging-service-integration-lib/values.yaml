@@ -1,0 +1,2 @@
+java:
+  image: 'hmctsprod.azurecr.io/opal/opal-logging-service-integration-lib:latest'
