@@ -160,6 +160,7 @@ dependencyManagement {
     }
 }
 
+//CVE-2026-42580, CVE-2026-41293, CVE-2026-33117, CVE-2026-43515, CVE-2026-42579, CVE-2026-43514, CVE-2026-42578, CVE-2026-43513, CVE-2026-41417, CVE-2026-42584, CVE-2025-21199, CVE-2026-42583, CVE-2026-42582, CVE-2026-44248, CVE-2026-41284, CVE-2026-42581, CVE-2026-42577, CVE-2026-43512, CVE-2026-42587, CVE-2026-42586, CVE-2026-42498, CVE-2026-42585
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springVersion
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springVersion
