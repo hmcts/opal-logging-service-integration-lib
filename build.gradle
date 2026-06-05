@@ -155,22 +155,22 @@ ext['snakeyaml.version'] = '2.0'
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.0.0'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.1'
+        mavenBom "org.springframework.integration:spring-integration-bom:7.0.4"
     }
 }
 
-//CVE-2026-42580, CVE-2026-41293, CVE-2026-33117, CVE-2026-43515, CVE-2026-42579, CVE-2026-43514, CVE-2026-42578, CVE-2026-43513, CVE-2026-41417, CVE-2026-42584, CVE-2025-21199, CVE-2026-42583, CVE-2026-42582, CVE-2026-44248, CVE-2026-41284, CVE-2026-42581, CVE-2026-42577, CVE-2026-43512, CVE-2026-42587, CVE-2026-42586, CVE-2026-42498, CVE-2026-42585
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+
 
     implementation('org.springframework.cloud:spring-cloud-starter-openfeign') {
         exclude group: 'commons-fileupload', module: 'commons-fileupload'
     }
-    implementation group: 'org.springframework', name: 'spring-jms', version: '6.2.18'
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.17'
+    implementation group: 'org.springframework', name: 'spring-jms'
 
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '8.0.0'
     implementation group: 'org.apache.qpid', name: 'qpid-jms-client', version: '2.10.0'
