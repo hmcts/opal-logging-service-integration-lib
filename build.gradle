@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'org.springframework.boot' version '3.5.14'
+    id 'org.springframework.boot' version '4.0.6'
     id 'com.github.ben-manes.versions' version '0.54.0'
     id 'org.sonarqube' version '7.3.0.8198'
     id 'maven-publish'
@@ -149,7 +149,6 @@ repositories {
 ext {
     log4JVersion = "2.26.0"
     logbackVersion = "1.5.34"
-    springVersion = "3.5.14"
 }
 
 ext['snakeyaml.version'] = '2.0'
@@ -162,10 +161,11 @@ dependencyManagement {
 
 //CVE-2026-42580, CVE-2026-41293, CVE-2026-33117, CVE-2026-43515, CVE-2026-42579, CVE-2026-43514, CVE-2026-42578, CVE-2026-43513, CVE-2026-41417, CVE-2026-42584, CVE-2025-21199, CVE-2026-42583, CVE-2026-42582, CVE-2026-44248, CVE-2026-41284, CVE-2026-42581, CVE-2026-42577, CVE-2026-43512, CVE-2026-42587, CVE-2026-42586, CVE-2026-42498, CVE-2026-42585
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springVersion
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springVersion
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: springVersion
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: springVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+
     implementation('org.springframework.cloud:spring-cloud-starter-openfeign') {
         exclude group: 'commons-fileupload', module: 'commons-fileupload'
     }
@@ -180,15 +180,18 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: logbackVersion
     implementation group: 'ch.qos.logback', name: 'logback-core', version: logbackVersion
 
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springVersion
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '6.0.0'
     testImplementation group: 'com.azure', name: 'azure-messaging-servicebus', version: '7.17.18'
     testImplementation group: 'org.wiremock', name: 'wiremock-standalone', version: '3.13.2'
 
-    implementation 'com.microsoft.azure:applicationinsights-spring-boot-starter:2.6.4'
     compileOnly 'org.projectlombok:lombok:1.18.46'
     annotationProcessor 'org.projectlombok:lombok:1.18.46'
 
+    //Added to override dependency version to resolve vulnerability
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.22'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:11.0.22'
+    implementation 'org.apache.commons:commons-lang3:3.20.0'
 }
 
 rootProject.tasks.named("processIntegrationTestResources") {
