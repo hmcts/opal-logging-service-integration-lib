@@ -7,5 +7,5 @@ def product = "opal"
 def component = "logging-service-integration-lib"
 
 withPipeline(type, product, component) {
-    isJavaLibrary()
+    nonDeployableApp()
 }
