@@ -150,52 +150,47 @@ ext {
     log4JVersion = "2.26.0"
     logbackVersion = "1.5.34"
 }
-
-ext['snakeyaml.version'] = '2.0'
+ext['netty.version'] = '4.2.13.Final'
+ext['tomcat.version'] = '11.0.22'
 
 dependencyManagement {
     imports {
         mavenBom "tools.jackson:jackson-bom:3.1.2"
         mavenBom 'org.springframework.boot:spring-boot-dependencies:4.0.6'
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.1'
-        mavenBom "io.netty:netty-bom:4.2.15.Final"
     }
 }
 
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aspectj'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aspectj'
+    implementation 'org.springframework.boot:spring-boot-starter-json'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation('org.springframework.cloud:spring-cloud-starter-openfeign') {
         exclude group: 'commons-fileupload', module: 'commons-fileupload'
     }
-    implementation group: 'org.springframework', name: 'spring-jms'
-    implementation group: 'tools.jackson.core', name: 'jackson-databind'
+    implementation 'org.springframework:spring-jms'
+    implementation 'tools.jackson.core:jackson-databind'
 
 
-    implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '8.0.0'
-    implementation group: 'org.apache.qpid', name: 'qpid-jms-client', version: '2.10.0'
+    implementation "com.github.hmcts.java-logging:logging:8.0.0"
+    implementation "org.apache.qpid:qpid-jms-client:2.10.0"
 
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4JVersion
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4JVersion
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: logbackVersion
-    implementation group: 'ch.qos.logback', name: 'logback-core', version: logbackVersion
+    implementation "org.apache.logging.log4j:log4j-api:$log4JVersion"
+    implementation "org.apache.logging.log4j:log4j-to-slf4j:$log4JVersion"
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation "ch.qos.logback:logback-core:$logbackVersion"
 
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-webmvc-test'
-    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '6.0.0'
-    testImplementation group: 'com.azure', name: 'azure-messaging-servicebus', version: '7.17.18'
-    testImplementation group: 'org.wiremock', name: 'wiremock-standalone', version: '3.13.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation "io.rest-assured:rest-assured:6.0.0"
+    testImplementation "com.azure:azure-messaging-servicebus:7.17.18"
+    testImplementation "org.wiremock:wiremock-standalone:3.13.2"
 
     compileOnly 'org.projectlombok:lombok:1.18.46'
     annotationProcessor 'org.projectlombok:lombok:1.18.46'
-
-    //Added to override dependency version to resolve vulnerability
-    implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.22'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:11.0.22'
-    implementation 'org.apache.commons:commons-lang3:3.20.0'
 }
 
 rootProject.tasks.named("processIntegrationTestResources") {
