@@ -147,17 +147,15 @@ repositories {
 }
 
 ext {
-    jacksonVersion = "3.1.2"
     log4JVersion = "2.26.0"
     logbackVersion = "1.5.34"
-    springVersion = "4.0.6"
 }
 
 ext['snakeyaml.version'] = '2.0'
 
 dependencyManagement {
     imports {
-        mavenBom "tools.jackson:jackson-bom:${jacksonVersion}"
+        mavenBom "tools.jackson:jackson-bom:3.1.2"
         mavenBom 'org.springframework.boot:spring-boot-dependencies:4.0.6'
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.1'
         mavenBom "io.netty:netty-bom:4.2.15.Final"
