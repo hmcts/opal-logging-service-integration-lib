@@ -2,7 +2,6 @@ package uk.gov.hmcts.opal.logging.integration.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jms.ConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -12,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import tools.jackson.databind.ObjectMapper;
 
 class PdpoAsyncJmsConfigTest {
 
@@ -33,7 +33,7 @@ class PdpoAsyncJmsConfigTest {
             ConnectionFactory factory = context.getBean(ConnectionFactory.class);
             assertThat(factory).isInstanceOf(CachingConnectionFactory.class);
 
-            MappingJackson2MessageConverter converter = context.getBean(MappingJackson2MessageConverter.class);
+            MessageConverter converter = context.getBean(MessageConverter.class);
             assertThat(converter).isNotNull();
 
             JmsTemplate template = context.getBean(JmsTemplate.class);
