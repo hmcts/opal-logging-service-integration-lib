@@ -21,9 +21,7 @@ class PdpoAsyncJmsConfigTest {
             "logging-service.pdpl.async.connection-string="
                 + "Endpoint=sb://example.servicebus.windows.net/;"
                 + "SharedAccessKeyName=OpalPdpo;"
-                + "SharedAccessKey=secret=",
-            "logging-service.pdpl.async.queue-name=pdpo-queue"
-        )
+                + "SharedAccessKey=secret=", "logging-service.pdpl.async.queue-name=pdpo-queue")
         .withUserConfiguration(TestConfig.class);
 
     @Test
@@ -32,6 +30,7 @@ class PdpoAsyncJmsConfigTest {
             assertThat(context).hasSingleBean(ConnectionFactory.class);
             ConnectionFactory factory = context.getBean(ConnectionFactory.class);
             assertThat(factory).isInstanceOf(CachingConnectionFactory.class);
+            assertThat(((CachingConnectionFactory) factory).isCacheProducers()).isFalse();
 
             MessageConverter converter = context.getBean(MessageConverter.class);
             assertThat(converter).isNotNull();
