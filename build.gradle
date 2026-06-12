@@ -14,7 +14,7 @@ plugins {
 }
 
 group = 'uk.gov.hmcts'
-version = '0.0.9'
+version = '0.0.10'
 
 java {
     toolchain {
@@ -150,9 +150,9 @@ ext {
     log4JVersion = "2.26.0"
     logbackVersion = "1.5.34"
     set('spring-framework.version', "7.0.8")
+    set('netty.version', '4.2.13.Final')
+    set('tomcat.version', '11.0.22')
 }
-ext['netty.version'] = '4.2.13.Final'
-ext['tomcat.version'] = '11.0.22'
 
 dependencyManagement {
     imports {
