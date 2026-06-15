@@ -38,7 +38,8 @@ public class PdpoAsyncJmsConfig {
 
         CachingConnectionFactory cachingFactory = new CachingConnectionFactory(qpidFactory);
         cachingFactory.setSessionCacheSize(5);
-        cachingFactory.setCacheProducers(true);
+        // Service Bus can forcibly detach an idle producer link. Do not reuse cached producers after that.
+        cachingFactory.setCacheProducers(false);
         cachingFactory.setReconnectOnException(true);
 
         return cachingFactory;
