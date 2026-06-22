@@ -212,9 +212,9 @@ publishing {
     publications {
         Main(MavenPublication) {
             from components.java
-            groupId project.group
-            artifactId 'opal-logging-service-integration-lib'
-            version project.version
+            groupId = project.group
+            artifactId = 'opal-logging-service-integration-lib'
+            version = project.version
         }
     }
 }
