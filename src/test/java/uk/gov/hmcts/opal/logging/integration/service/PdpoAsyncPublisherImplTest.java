@@ -1,6 +1,7 @@
 package uk.gov.hmcts.opal.logging.integration.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.entry;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
@@ -30,6 +31,7 @@ import uk.gov.hmcts.opal.logging.integration.dto.ParticipantIdentifier;
 import uk.gov.hmcts.opal.logging.integration.dto.PersonalDataProcessingCategory;
 import uk.gov.hmcts.opal.logging.integration.dto.PersonalDataProcessingLogDetails;
 import uk.gov.hmcts.opal.logging.integration.messaging.PdpoLogMessage;
+import uk.gov.hmcts.opal.logging.integration.messaging.PdpoQueueLogDetails;
 
 @ExtendWith(MockitoExtension.class)
 class PdpoAsyncPublisherImplTest {
@@ -75,7 +77,7 @@ class PdpoAsyncPublisherImplTest {
         assertThat(payloadCaptor.getValue()).isInstanceOf(PdpoLogMessage.class);
         PdpoLogMessage message = (PdpoLogMessage) payloadCaptor.getValue();
         assertThat(message.logType()).isEqualTo("PDPO");
-        assertThat(message.details()).isEqualTo(details);
+        assertThat(message.details()).isEqualTo(PdpoQueueLogDetails.fromLogDetails(details));
 
         Message jmsMessage = mock(Message.class);
         postProcessorCaptor.getValue().postProcessMessage(jmsMessage);
@@ -113,6 +115,22 @@ class PdpoAsyncPublisherImplTest {
             .convertAndSend(eq("pdpo-queue"), any(), any(MessagePostProcessor.class));
     }
 
+    @Test
+    void shouldGroupIndividualsByTypeInQueuedPayload() {
+        PersonalDataProcessingLogDetails details = sampleDetails(List.of(
+            participant("creator-1", "OPAL_USER_ID"),
+            participant("person-2", "DEFENDANT"),
+            participant("person-3", "DEFENDANT")));
+
+        publisher.publish(details);
+
+        verify(jmsTemplate).convertAndSend(eq("pdpo-queue"), payloadCaptor.capture(), any(MessagePostProcessor.class));
+        PdpoLogMessage message = (PdpoLogMessage) payloadCaptor.getValue();
+        assertThat(message.details().individuals()).containsExactly(
+            entry("OPAL_USER_ID", List.of("creator-1")),
+            entry("DEFENDANT", List.of("person-2", "person-3")));
+    }
+
     private PersonalDataProcessingLogDetails sampleDetails() {
         ParticipantIdentifier createdBy = ParticipantIdentifier.builder()
             .identifier("creator-1")
@@ -126,6 +144,27 @@ class PdpoAsyncPublisherImplTest {
             .ipAddress("192.0.2.1")
             .category(PersonalDataProcessingCategory.COLLECTION)
             .individuals(List.of(createdBy))
+            .build();
+    }
+
+    private PersonalDataProcessingLogDetails sampleDetails(List<ParticipantIdentifier>
+        individuals) {
+        ParticipantIdentifier createdBy = participant("creator-1", "OPAL_USER_ID");
+
+        return PersonalDataProcessingLogDetails.builder()
+            .createdBy(createdBy)
+            .businessIdentifier("BUS-123")
+            .createdAt(OffsetDateTime.parse("2025-01-10T12:34:56.789Z"))
+            .ipAddress("192.0.2.1")
+            .category(PersonalDataProcessingCategory.COLLECTION)
+            .individuals(individuals)
+            .build();
+    }
+
+    private ParticipantIdentifier participant(String identifier, String type) {
+        return ParticipantIdentifier.builder()
+            .identifier(identifier)
+            .type(new TestIdentifierType(type))
             .build();
     }
 
