@@ -147,8 +147,10 @@ repositories {
 }
 
 ext {
-    log4JVersion = "2.26.0"
+
     logbackVersion = "1.5.37"
+    log4JVersion = "2.26.1"
+
     set('spring-framework.version', "7.0.8")
     set('netty.version', '4.2.15.Final')
     set('tomcat.version', '11.0.22')
