@@ -187,7 +187,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation "io.rest-assured:rest-assured:6.0.0"
-    testImplementation "com.azure:azure-messaging-servicebus:7.17.18"
+    testImplementation "com.azure:azure-messaging-servicebus:7.17.19"
     testImplementation "org.wiremock:wiremock-standalone:3.13.2"
 
     compileOnly 'org.projectlombok:lombok:1.18.46'
