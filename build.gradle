@@ -148,7 +148,7 @@ repositories {
 
 ext {
 
-    logbackVersion = "1.5.37"
+    logbackVersion = "1.5.38"
     log4JVersion = "2.26.1"
 
     set('spring-framework.version', "7.0.8")
