@@ -14,7 +14,7 @@ plugins {
 }
 
 group = 'uk.gov.hmcts'
-version = '0.0.11'
+version = '0.0.12'
 
 java {
     toolchain {
@@ -153,7 +153,7 @@ ext {
 
     set('spring-framework.version', "7.0.8")
     set('netty.version', '4.2.15.Final')
-    set('tomcat.version', '11.0.23')
+    set('tomcat.version', '11.0.24')
 }
 
 dependencyManagement {
