@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import jakarta.jms.Message;
 import java.time.Duration;
@@ -29,13 +30,18 @@ import uk.gov.hmcts.opal.logging.integration.dto.IdentifierType;
 import uk.gov.hmcts.opal.logging.integration.dto.ParticipantIdentifier;
 import uk.gov.hmcts.opal.logging.integration.dto.PersonalDataProcessingCategory;
 import uk.gov.hmcts.opal.logging.integration.dto.PersonalDataProcessingLogDetails;
+import uk.gov.hmcts.opal.logging.integration.mapper.PdpoQueueLogDetailsMapper;
 import uk.gov.hmcts.opal.logging.integration.messaging.PdpoLogMessage;
+import uk.gov.hmcts.opal.logging.integration.messaging.PdpoQueueLogDetails;
 
 @ExtendWith(MockitoExtension.class)
 class PdpoAsyncPublisherImplTest {
 
     @Mock
     private JmsTemplate jmsTemplate;
+
+    @Mock
+    private PdpoQueueLogDetailsMapper pdpoQueueLogDetailsMapper;
 
     @Captor
     private ArgumentCaptor<Object> payloadCaptor;
@@ -59,12 +65,14 @@ class PdpoAsyncPublisherImplTest {
             Duration.ZERO,
             Duration.ofSeconds(5)
         );
-        publisher = new PdpoAsyncPublisherImpl(jmsTemplate, properties);
+        publisher = new PdpoAsyncPublisherImpl(jmsTemplate, properties, pdpoQueueLogDetailsMapper);
     }
 
     @Test
     void shouldPublishMessageOnce() throws Exception {
         PersonalDataProcessingLogDetails details = sampleDetails();
+        PdpoQueueLogDetails queueLogDetails = mock(PdpoQueueLogDetails.class);
+        when(pdpoQueueLogDetailsMapper.toQueueLogDetails(details)).thenReturn(queueLogDetails);
 
         boolean result = publisher.publish(details);
 
@@ -75,7 +83,7 @@ class PdpoAsyncPublisherImplTest {
         assertThat(payloadCaptor.getValue()).isInstanceOf(PdpoLogMessage.class);
         PdpoLogMessage message = (PdpoLogMessage) payloadCaptor.getValue();
         assertThat(message.logType()).isEqualTo("PDPO");
-        assertThat(message.details()).isEqualTo(details);
+        assertThat(message.details()).isEqualTo(queueLogDetails);
 
         Message jmsMessage = mock(Message.class);
         postProcessorCaptor.getValue().postProcessMessage(jmsMessage);

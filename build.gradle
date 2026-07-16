@@ -14,7 +14,7 @@ plugins {
 }
 
 group = 'uk.gov.hmcts'
-version = '0.0.10'
+version = '0.0.11'
 
 java {
     toolchain {
@@ -185,6 +185,7 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-to-slf4j:$log4JVersion"
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
     implementation "ch.qos.logback:logback-core:$logbackVersion"
+    implementation 'org.mapstruct:mapstruct:1.6.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
@@ -194,6 +195,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.46'
     annotationProcessor 'org.projectlombok:lombok:1.18.46'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 }
 
 rootProject.tasks.named("processIntegrationTestResources") {

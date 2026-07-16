@@ -18,6 +18,7 @@ import uk.gov.hmcts.opal.logging.integration.dto.IdentifierType;
 import uk.gov.hmcts.opal.logging.integration.dto.ParticipantIdentifier;
 import uk.gov.hmcts.opal.logging.integration.dto.PersonalDataProcessingCategory;
 import uk.gov.hmcts.opal.logging.integration.dto.PersonalDataProcessingLogDetails;
+import uk.gov.hmcts.opal.logging.integration.mapper.PdpoQueueLogDetailsMapper;
 import uk.gov.hmcts.opal.logging.integration.messaging.PdpoLogMessage;
 
 @Slf4j
@@ -26,11 +27,14 @@ public class PdpoAsyncPublisherImpl implements PdpoAsyncPublisher {
 
     private final JmsTemplate jmsTemplate;
     private final PdpoAsyncProperties properties;
+    private final PdpoQueueLogDetailsMapper pdpoQueueLogDetailsMapper;
 
     public PdpoAsyncPublisherImpl(@Qualifier("pdpoJmsTemplate") JmsTemplate jmsTemplate,
-                                  PdpoAsyncProperties properties) {
+                                  PdpoAsyncProperties properties,
+                                  PdpoQueueLogDetailsMapper pdpoQueueLogDetailsMapper) {
         this.jmsTemplate = jmsTemplate;
         this.properties = properties;
+        this.pdpoQueueLogDetailsMapper = pdpoQueueLogDetailsMapper;
     }
 
     @Override
@@ -61,7 +65,8 @@ public class PdpoAsyncPublisherImpl implements PdpoAsyncPublisher {
     }
 
     private void send(PersonalDataProcessingLogDetails logDetails) throws JmsException {
-        PdpoLogMessage message = new PdpoLogMessage(properties.logType(), logDetails);
+        PdpoLogMessage message = new PdpoLogMessage(properties.logType(),
+            pdpoQueueLogDetailsMapper.toQueueLogDetails(logDetails));
         jmsTemplate.convertAndSend(
             properties.queueName(),
             message,
