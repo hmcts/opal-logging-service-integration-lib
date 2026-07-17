@@ -19,7 +19,7 @@ class PersonalDataProcessingLogDetailsTest {
 
     private enum TestIdentifierType implements IdentifierType {
         OPAL_USER_ID,
-        EXTERNAL_SERVICE;
+        DRAFT_ACCOUNT;
 
         @Override
         public String getType() {
@@ -36,12 +36,12 @@ class PersonalDataProcessingLogDetailsTest {
 
         ParticipantIdentifier recipient = ParticipantIdentifier.builder()
             .identifier("recipient-456")
-            .type(TestIdentifierType.EXTERNAL_SERVICE)
+            .type(TestIdentifierType.DRAFT_ACCOUNT)
             .build();
 
         ParticipantIdentifier individual = ParticipantIdentifier.builder()
             .identifier("individual-789")
-            .type(TestIdentifierType.EXTERNAL_SERVICE)
+            .type(TestIdentifierType.DRAFT_ACCOUNT)
             .build();
 
         OffsetDateTime createdAt = OffsetDateTime.parse("2025-01-10T12:34:56.789Z");
@@ -64,7 +64,7 @@ class PersonalDataProcessingLogDetailsTest {
         assertEquals("OPAL_USER_ID", root.get("created_by").get("type").asText());
 
         assertEquals("recipient-456", root.get("recipient").get("id").asText());
-        assertEquals("EXTERNAL_SERVICE", root.get("recipient").get("type").asText());
+        assertEquals("DRAFT_ACCOUNT", root.get("recipient").get("type").asText());
 
         assertEquals("BUS-999", root.get("business_identifier").asText());
         assertEquals("192.0.2.1", root.get("ip_address").asText());
@@ -75,6 +75,6 @@ class PersonalDataProcessingLogDetailsTest {
         assertNotNull(individuals);
         assertEquals(1, individuals.size());
         assertEquals("individual-789", individuals.get(0).get("id").asText());
-        assertEquals("EXTERNAL_SERVICE", individuals.get(0).get("type").asText());
+        assertEquals("DRAFT_ACCOUNT", individuals.get(0).get("type").asText());
     }
 }
