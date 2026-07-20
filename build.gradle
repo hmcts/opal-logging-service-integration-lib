@@ -158,7 +158,7 @@ ext {
 
 dependencyManagement {
     imports {
-        mavenBom "tools.jackson:jackson-bom:3.2.0"
+        mavenBom "tools.jackson:jackson-bom:3.2.1"
         mavenBom 'org.springframework.boot:spring-boot-dependencies:4.1.0'
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.2'
     }
