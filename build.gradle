@@ -196,8 +196,8 @@ dependencies {
     testImplementation "com.azure:azure-messaging-servicebus:7.17.20"
     testImplementation "org.wiremock:wiremock-standalone:3.13.2"
 
-    compileOnly 'org.projectlombok:lombok:1.18.46'
-    annotationProcessor 'org.projectlombok:lombok:1.18.46'
+    compileOnly 'org.projectlombok:lombok:1.18.48'
+    annotationProcessor 'org.projectlombok:lombok:1.18.48'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 }
 
