@@ -203,7 +203,7 @@ def card_for(message, build, merged_pr=None, new_code=False):
         details.append({"type": "TextBlock", "text": f"Commit {short_sha}; no merged PR verified.",
                         "wrap": True, "size": "Small", "spacing": "Small"})
         actions.append(commit_action(REPO, build["sha"]))
-    heading = f"{'🔴' if failed else '🟢'} Logging Integration Lib master · #{number} · {status}"
+    heading = f"{'🔴' if failed else '🟢'} Logging Lib master · #{number} · {status}"
     return make_card(heading, message, "attention" if failed else "good", actions, details)
 
 
